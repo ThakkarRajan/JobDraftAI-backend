@@ -1,7 +1,7 @@
 fastapi
 uvicorn
-pydantic
 PyPDF2
-openai>=1.0.0
-python-multipart
 python-dotenv
+pydantic
+python-multipart
+openai>=1.0.0
