@@ -18,7 +18,7 @@ app = FastAPI()
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://job-draft-ai.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -155,3 +155,7 @@ DO NOT return markdown, explanation, or wrap the JSON in triple backticks.
     except Exception as e:
         logging.error("❌ OpenAI error: %s", str(e))
         raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
