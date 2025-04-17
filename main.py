@@ -76,11 +76,21 @@ async def process_text(data: ResumeText):
     logging.info("📥 Processing resume text")
 
     prompt = f"""
-You are an AI resume assistant. The user provides a resume and a job description. Your task is to make it ATS friendly and tailor the resume to better fit the job by improving the summary, emphasizing relevant skills, updating experience explanation according to job profile, and surfacing matching certificates.
+You are an advanced AI resume assistant.
 
-Check whether the existing certifications and experience highlights are relevant to the job profile. Remove irrelevant ones and add new appropriate data. If no data is provided, generate sample data tailored to the job profile.
+The user provides a raw resume and a job description. Your job is to **rewrite and tailor** the resume so it is **ATS-friendly** and strongly aligned with the job.
 
-Return only valid JSON with this format:
+Focus on:
+- Improving the professional summary to reflect the job
+- Extracting and enhancing relevant skills
+- Rewriting experience descriptions to match job responsibilities
+- Adding **at least one certificate**
+- Ensuring **each experience has 4 tailored bullet points**
+- Ensuring **each project has at least 2 specific bullet points**
+- If no experience is found, generate a relevant **volunteer or internship experience** based on the job
+- Return only valid JSON in the structure below (no markdown, no code fences, no explanation)
+
+Output Format (return this as pure JSON only):
 {{
   "name": "...",
   "contact": {{
@@ -106,7 +116,7 @@ Return only valid JSON with this format:
       "location": "...",
       "start": "...",
       "end": "...",
-      "highlights": ["...", "..."]
+      "highlights": ["...", "...", "...", "..."]
     }}
   ],
   "tailored_certificates": ["..."],
@@ -114,7 +124,8 @@ Return only valid JSON with this format:
     {{
       "title": "...",
       "tech": ["..."],
-      "description": "..."
+      "description": "...",
+      "highlights": ["...", "..."]
     }}
   ],
   "education": [
@@ -128,13 +139,14 @@ Return only valid JSON with this format:
   ]
 }}
 
-User data:
+Resume and job description:
 {data.text}
 """
 
+
     try:
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4-turbo",
             messages=[
                 {"role": "system", "content": "You are a helpful resume assistant that returns JSON only."},
                 {"role": "user", "content": prompt},
