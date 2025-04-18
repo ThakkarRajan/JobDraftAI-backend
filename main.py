@@ -86,7 +86,8 @@ Focus on:
 - Rewriting experience descriptions to match job responsibilities
 - Adding **at least one certificate**
 - Ensuring **each experience has 4 tailored bullet points**
-- Ensuring **each project has at least 2 specific bullet points**
+- Ensuring **each project has at least 2 specific bullet points directly related to the job description**
+- If no projects exist, create **relevant projects tailored to the job**
 - If no experience is found, generate a relevant **volunteer or internship experience** based on the job
 - Return only valid JSON in the structure below (no markdown, no code fences, no explanation)
 
@@ -142,7 +143,6 @@ Output Format (return this as pure JSON only):
 Resume and job description:
 {data.text}
 """
-
 
     try:
         response = client.chat.completions.create(
